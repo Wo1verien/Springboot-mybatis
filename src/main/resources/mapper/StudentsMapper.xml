@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cz.springbootMybatisDemo.mapper.StudentsMapper">
+
+    <resultMap id="BaseResultMap" type="com.cz.springbootMybatisDemo.entity.Students">
+        <id column="id" property="id"/>
+        <result column="name" property="name" />
+        <result column="dept_id" property="deptId" javaType="Integer"/>
+        <result column="age" property="age" />
+        <result column="sex" property="sex"/>
+        <result column="height" property="height"/>
+        <result column="login_date" property="loginDate"/>
+        <association property="dept" column="dept_id" select="com.cz.springbootMybatisDemo.mapper.DepartmentsMapper.findById">
+<!--            <id property="deptId" column="dept_id"></id>-->
+<!--            <result property="deptName" column="dept_name"></result>-->
+<!--            <result property="deptType" column="dept_type"/>-->
+        </association>
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM tb_students_info WHERE id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="com.cz.springbootMybatisDemo.entity.Students">
+        INSERT INTO tb_students_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">id,</if>
+            <if test="name!=null">name,</if>
+            <if test="deptId!=null">dept_id,</if>
+            <if test="age!=null">age,</if>
+            <if test="sex!=null">sex,</if>
+            <if test="height!=null">height,</if>
+            <if test="loginDate!=null">login_date,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">#{id},</if>
+            <if test="name!=null">#{name},</if>
+            <if test="deptId!=null">#{deptId},</if>
+            <if test="age!=null">#{age},</if>
+            <if test="sex!=null">#{sex},</if>
+            <if test="height!=null">#{height},</if>
+            <if test="loginDate!=null">#{loginDate},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.cz.springbootMybatisDemo.entity.Students">
+        UPDATE tb_students_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null">name=#{name},</if>
+            <if test="deptId!=null">dept_id=#{deptId},</if>
+            <if test="age!=null">age=#{age},</if>
+            <if test="sex!=null">sex=#{sex},</if>
+            <if test="height!=null">height=#{height},</if>
+            <if test="loginDate!=null">login_date=#{loginDate},</if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="com.cz.springbootMybatisDemo.entity.Students">
+        DELETE
+        FROM tb_students_info
+        WHERE id=#{id};
+    </delete>
+
+    <select id="queryDeptIdByNameAndAge" resultType="Integer">
+        SELECT dept_id
+        FROM tb_students_info
+        WHERE name LIKE "${name}%" AND age > #{age};
+    </select>
+    
+    <select id="queryDeptNameByStId"  resultType="String">
+        SELECT dp.dept_name
+        FROM tb_students_info st,tb_departments dp
+        WHERE id =#{id} AND st.dept_id =dp.dept_id;
+    </select>
+    <select id="findByName" resultMap="BaseResultMap">
+        SELECT *
+        FROM tb_students_info
+        WHERE name=#{name}
+    </select>
+
+
+</mapper>
