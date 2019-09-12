@@ -25,6 +25,11 @@ public class StudentsController {
     @Autowired
     private StudentsMapper studentsMapper;
 
+    @GetMapping("/")
+    public String health(){
+        return "ok";
+    }
+
     @GetMapping("/get")
     public Students getStudents(@RequestParam("id") int id) {
         Students students = studentsService.findById(id);
