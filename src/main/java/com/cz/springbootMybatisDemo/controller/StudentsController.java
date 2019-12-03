@@ -115,4 +115,14 @@ public class StudentsController {
         return studentsMapper.findByName(name);
     }
 
+
+    @GetMapping("/testTransaction")
+    public void  testTransaction(){
+        try {
+            studentsService.testTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

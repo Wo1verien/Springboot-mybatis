@@ -21,4 +21,6 @@ public interface StudentsService {
     List<Integer> queryDeptIdByNameAndAge(String name, Integer age);
 
     String queryDeptNameByStId(Integer id);
+
+    public void testTransaction() throws Exception;
 }
